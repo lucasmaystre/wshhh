@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!--Import Google Icon Font-->
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css" media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="/static/css/default.css" />
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>wshhh</title>
+</head>
+<body>
+
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper cyan">
+        <a href="#!" class="brand-logo">&nbsp;wshhh...</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li>{{ current_user.email }}</li>
+          <li><a href="/logout"><i class="material-icons">power_settings_new</i></a></li>
+          <li><a href="."><i class="material-icons">refresh</i></a></li>
+          <li><a href="#"><i class="material-icons">more_vert</i></a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Hidden form for saving a new clothing -->
+  <form id="form-save" method="post" action="/save">
+    <input id="snap1" type="hidden" name="snap1" value="">
+    <input id="snap2" type="hidden" name="snap2" value="">
+  </form>
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content modal-video grey darken-3">
+      <video id="video" class="activator" autoplay></video>
+    </div>
+    <div id="instructions" class="text-white">
+      <span class="flow-text white-text" state="step1">
+        <strong>Step 1</strong>: take a pic of your clothing
+      </span>
+    </div>
+    <div class="modal-footer grey darken-4">
+      <a id="snap-button" class="waves-effect waves-light btn cyan">
+        <i class="material-icons right">videocam</i>Snap
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col s6 m4 l3 ">
+      <div class="card cyan darken-4">
+        <div class="card-image waves-effect waves-block waves-light">
+          <a href="#modal1"><img src="/static/img/add-clothing.jpg"></a>
+        </div>
+        <div class="card-action">
+              <a href="#modal1">Add clothing</a>
+        </div>
+      </div>
+    </div>
+
+  {% for item, image, attrs in items %}
+
+    <div class="col s6 m4 l3 ">
+      <div class="card">
+        <div class="card-image waves-effect waves-block waves-light">
+          <img class="activator" src="/static/usercontent/{{ image.thumbnail_filename }}">
+        </div>
+        <div class="card-content">
+          <span class="activator grey-text text-darken-4">{{ item.created|timedelta }} ago<i class="material-icons right">more_vert</i></span>
+        </div>
+        <div class="card-reveal">
+          <span class="card-title grey-text text-darken-4">Instructions<i class="material-icons right">close</i></span>
+          <ul class="collection">
+          {% for attr in attrs %}
+            <li class="collection-item">
+              <img class="laundry-icon" src="/static/symbols/{{ attr.filename }}">
+              {{ attr.description }}</li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  {% endfor %}
+
+  </div>
+
+<!--
+	Ideally these elements aren't created until it's confirmed that the 
+	client supports video/camera, but for the sake of illustrating the 
+	elements involved, they are created with markup (not JavaScript)
+-->
+
+  <footer class="page-footer grey">
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <p class="grey-text text-lighten-4">Stay tuned!</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      &copy; 2016 Ksenia &amp; Lucas
+      <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+      </div>
+    </div>
+  </footer>
+
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="/static/js/materialize.min.js"></script>
+  <script src="/static/js/script.js"></script>
+
+</body>
+</html>
