@@ -1,5 +1,7 @@
 import base64
 import re
+import findWashLabel
+import cv2
 
 from babel.dates import format_timedelta
 from datamodels import User, Attribute, ItemAttribute, Item, Image
@@ -60,6 +62,11 @@ def save():
     thumbnail_filename = make_thumbnail(item.id)
     image = Image.create(item=item.id, thumbnail_filename=thumbnail_filename,
             fullres_filename=fullres_filename)
+    # Find the symbol.
+    label = cv2.imread("static/usercontent/{}".format(label_filename), 0)
+    label_no = findWashLabel.findWashLabel(label)
+    print(label_no)
+    ItemAttribute.create(item=item.id, attribute=label_no)
     return redirect(url_for("main"))
 
 
@@ -136,3 +143,9 @@ def validate_credentials(email, password):
 def format_dt(dt):
     return format_timedelta(datetime.now() - dt)
 app.jinja_env.filters['timedelta'] = format_dt
+
+
+if __name__ == "__main__":
+    context = ("selfsigned.crt", "selfsigned.key")
+    app.run(host='0.0.0.0',port='443',
+            debug=False, ssl_context=context)

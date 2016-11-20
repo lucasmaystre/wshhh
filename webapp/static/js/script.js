@@ -3,11 +3,33 @@ var video = document.getElementById('video');
 
 // Get access to the camera!
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    // Not adding `{ audio: true }` since we only want video now
-    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-        video.src = window.URL.createObjectURL(stream);
-        video.play();
-    });
+
+navigator.mediaDevices.enumerateDevices().then(function(deviceInfos) {
+    var deviceId = null;
+    for (var i = 0; i !== deviceInfos.length; ++i) {
+        var deviceInfo = deviceInfos[i];
+        if (deviceInfo.kind === 'videoinput') {
+            var label = deviceInfo.label || 'camera';
+            if (label.includes("back")) {
+                deviceId = deviceInfo.deviceId;
+            }
+        }
+    }
+    if (deviceId) {
+        navigator.mediaDevices.getUserMedia({ video: {
+                deviceId: {exact: deviceId}},
+                height: {min: 1000}}).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        });
+    } else {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        });
+    }
+});
 }
 
 // Trigger photo take
