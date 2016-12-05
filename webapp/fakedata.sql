@@ -1,4 +1,5 @@
-INSERT INTO user (id, email, pw_hash) VALUES (1, 'bengiuliano@gmail.com', 'pbkdf2:sha1:1000$SlPdbA6v$418988fb52845995862db8af55625cd5add12085');
+INSERT INTO user (id, email, pw_hash) VALUES (1, 'test@test.com',
+'pbkdf2:sha1:1000$OBYmoBLJ$775f2c3a6417a9c4f084d5493b305b5ab8b779df');
 
 INSERT INTO item (id, user_id, created) VALUES (1, 1, "2016-11-19 13:23:37.052");
 INSERT INTO item (id, user_id, created) VALUES (2, 1, "2016-11-20 03:09:56.172");
